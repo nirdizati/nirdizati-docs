@@ -1,0 +1,102 @@
+%
+%%%%%%%%%%%%%%%%%%%%%%% file typeinst.tex %%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% This is the LaTeX source for the instructions to authors using
+% the LaTeX document class 'llncs.cls' for contributions to
+% the Lecture Notes in Computer Sciences series.
+% http://www.springer.com/lncs       Springer Heidelberg 2006/05/04
+%
+% It may be used as a temlpate for your own input - copy it
+% to a new file with a new nam eand use it as the basis
+% for your article.
+%
+% NB: the document class 'llncs' has its own and detailed documentation, see
+% ftp://ftp.springer.de/data/pubftp/pub/tex/latex/llncs/latex2e/llncsdoc.pdf
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\documentclass[runningheads,a4paper]{llncs}
+
+\usepackage{amssymb}
+\setcounter{tocdepth}{3}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{booktabs}
+%\usepackage{times}
+\usepackage{perpage}
+\usepackage{hyperref}
+\MakePerPage{footnote}
+\usepackage{multirow}
+\usepackage{epstopdf} %converting to PDF
+\usepackage{tikz}
+\usetikzlibrary{arrows,patterns,automata,backgrounds,decorations,fit,petri,positioning,petri,shapes,calc}
+\usepackage[caption=false]{subfig}
+\usepackage{url}
+
+\urldef{\mailsa}\path|{andriiro,f.m.maggi,marlon.dumas}@ut.ee, kerwin.jorbina@gmail.com|
+\urldef{\mailsb}\path|dfmchiara@fbk.eu|
+\urldef{\mailsc}\path|{ilya.verenich,m.larosa,simon.raboczi}@qut.edu.au|
+\newcommand{\keywords}[1]{\par\addvspace\baselineskip
+\noindent\keywordname\enspace\ignorespaces#1}
+
+\begin{document}
+
+\mainmatter  % start of an individual contribution
+
+% first the title is needed
+\title{Nirdizati: A Web-based Tool for Predictive Process Monitoring}
+
+% a short form should be given in case it is too long for the running head
+\titlerunning{Predictive Business Process Monitoring with LSTM Neural Networks}
+
+% the name(s) of the author(s) follow(s) next
+%
+% NB: Chinese authors should write their first names(s) in front of
+% their surnames. This ensures that the names appear correctly in
+% the running heads and the author index.
+%
+\author{Andrii Rozumnyi\inst{1} \and Chiara Di Francescomarino\inst{2} \and Fabrizio Maria Maggi\inst{1} \and \\Ilya Verenich\inst{3,1} \and Kerwin Jorbina\inst{1} \and Marcello La Rosa\inst{3} \and \\ Marlon Dumas\inst{1} \and Simon Raboczi\inst{3}\thanks{Author names are in alphabetical order}}
+
+\institute{University of Tartu, Estonia\\
+\mailsa
+\and FBK IRST, Trento, Italy\\
+\mailsb
+\and Queensland University of Technology, Australia\\
+\mailsc
+}
+
+%
+% NB: a more complex sample for affiliations and the mapping to the
+% corresponding authors can be found in the file "llncs.dem"
+% (search for the string "\mainmatter" where a contribution starts).
+% "llncs.dem" accompanies the document class "llncs.cls".
+%
+
+\toctitle{Predictive Process Monitoring Using LSTM}
+\tocauthor{Authors' Instructions}
+\maketitle
+
+
+\begin{abstract}
+In this paper, we present a prototype of a predictive process monitoring engine for process workers and operational managers.
+The developed solution, named \emph{Nirdizati}, is a configurable full-stack web application that supports users in selecting the preferred prediction method from the list of implemented methods and enables the continuous prediction of various performance indicators at runtime.
+The results of the predictions, as well as the real-time summary statistics about the process execution, are presented in a dashboard that offers multiple visualization options.
+The target audience of this demonstration includes process mining researchers as well as practitioners interested in exploring the potential of process monitoring.
+\keywords{Process Mining, Predictive Process Monitoring, Machine Learning}
+\end{abstract}
+
+
+\section{Introduction} \label{sec:intro}
+
+
+\section{Architectural Overview} \label{sec:arch}
+
+\section{User Interface} \label{sec:UI}
+
+\section{Conclusion} \label{sec:conclusion}
+
+\bibliographystyle{splncs03}
+\bibliography{paper}
+
+\end{document}
