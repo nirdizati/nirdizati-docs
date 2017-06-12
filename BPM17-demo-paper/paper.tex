@@ -90,12 +90,67 @@ The target audience of this demonstration includes process mining researchers as
 \section{Introduction} \label{sec:intro}
 
 
-\section{Architectural Overview} \label{sec:arch}
+\section{Nirdizati Training} \label{sec:training}
+First, we have the Front-end application which acts as the interface for the user to
+select settings used for prediction and to analyze the prediction results. The second
+module is the Log Manager which is responsible for managing the logs. Uploading
+and retrieving the logs are the basic operations of this module. The third module is
+the Encoder which retrieves the log from the storage, parses it and prepares the log for
+the training phase in the Predictive Module. In this part, we retrieve the encoded data,
+split it into training and test set for evaluation, and build the predictive model from the
+training data. Finally, using the test data, we test it against the model created to get its
+accuracy. The aggregation of the results are done in the Evaluation Module which is
+tasked to calculate the error of the prediction model created.
 
-\section{User Interface} \label{sec:UI}
+
+%\vspace{-\baselineskip}
+\begin{figure}[t]%[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{img/nirdizati-training-architecture}
+	\caption{A high-level overview of Nirdizati Training.}
+	\label{fig:RNNexample}
+\end{figure}
+%\vspace{-\baselineskip}
+
+\section{Nirdizati Runtime} \label{sec:runtime}
+Figure~\ref{fig:dfd_0} illustrates the flow of data through the proposed system. A workflow management system (WFMS) continuously registers tasks performed in the organization.
+This serves as an input to our system, in the form of a stream of events.
+Next, the produced stream is consumed by a web server which is responsible for storing data and further information processing. 
+Web server, in turn, communicates with a predictive engine which applies pre-trained models for a business process and returns all the results of calculations.
+After web server receives the outputs from each predictive model, it writes them to a database and updates corresponding clients.
+From the user's side, the results are visualized via a dashboard-based interface which is capable of sending queries requesting various visualization options.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\textwidth]{img/dfd_0}
+	\caption{High-level data flow diagram in a Yourdon-Coad notation}
+	\label{fig:dfd_0}
+\end{figure}
+
+Based on this data flow diagram, we devise the main parts and high-level components of the system (Figure~\ref{fig:arch}): 
+
+\begin{itemize}
+	\setlength{\itemsep}{1pt}
+	\setlength{\parskip}{0pt}
+	\setlength{\parsep}{0pt}
+	\item streaming platform
+	\item web server with load balancer and internal components
+	\item predictive engine
+	\item client-side user interfaces
+\end{itemize}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1\textwidth]{img/nirdizati-runtime-architecture}
+	\caption{Proposed system design architecture}
+	\label{fig:arch}
+	%	\vspace{-5\baselineskip}
+\end{figure}
+
+Process workers and operational managers – typical users of such system – can set the process performance targets and subscribe to a stream of warnings and alerts generated whenever these targets are predicted to be violated. Thus, process workers will be capable of making more informed, data-driven decisions to get a better control of the process execution. This is especially beneficial for processes where process workers have more leeway to make corrective actions, for example, in a lead management process.
 
 \section{Conclusion} \label{sec:conclusion}
-
+The source code has been released as open source software under the Lesser GNU Public License (L-GPL) at \url{http://github.com/nirdizati}. The developed engine has been deployed on the server belonging to the Institute of Computer Science and can be accessed at \url{http://nirdizati.com}.
 \bibliographystyle{splncs03}
 \bibliography{paper}
 
