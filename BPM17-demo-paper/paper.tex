@@ -56,7 +56,7 @@
 % their surnames. This ensures that the names appear correctly in
 % the running heads and the author index.
 %
-\author{Andrii Rozumnyi\inst{1}  \and Chiara Di Francescomarino\inst{2} \and Chiara Ghidini\inst{2}  \and Fabrizio Maria Maggi\inst{1} \and \\Ilya Verenich\inst{3,1} \and Kerwin Jorbina\inst{1} \and Marcello La Rosa\inst{3} \and \\ Marlon Dumas\inst{1} \and Simon Raboczi\inst{3}\thanks{Author names are in alphabetical order}}
+\author{Andrii Rozumnyi\inst{1}  \and Chiara Di Francescomarino\inst{2} \and Chiara Ghidini\inst{2}  \and \\ Fabrizio Maria Maggi\inst{1} \and Ilya Verenich\inst{3,1} \and Kerwin Jorbina\inst{1} \and\\ Marcello La Rosa\inst{3} \and  Marlon Dumas\inst{1} \and Simon Raboczi\inst{3}\thanks{Author names are in alphabetical order}}
 
 \institute{University of Tartu, Estonia\\
 \mailsa
@@ -83,8 +83,15 @@
 %The developed solution, named \emph{Nirdizati}, is a configurable full-stack web application that supports users in selecting the preferred prediction method from the list of implemented methods and enables the continuous prediction of various performance indicators at runtime.
 %The results of the predictions, as well as the real-time summary statistics about the process execution, are presented in a dashboard that offers multiple visualization options.
 %The target audience of this demonstration includes process mining researchers as well as practitioners interested in exploring the potential of process monitoring.
+%In this paper, we present Nirdizati, an open-source tool for predictive monitoring of business processes.
+%The tool can be used to predict the outcome, the next events, or the remaining time of each case of a process.
+%For example, in an lead-to-order process, Nirdizati can predict which customer leads will convert to purchase orders and when.
+%In a claims handling process, Nirdizati can predict if a claim decision will be made on time or late.
+%Based on these predictions, process workers and operational managers can act proactively to resolve or mitigate potential process performance violations.
+%The target audience of this demonstration includes process mining researchers as well as practitioners interested in exploring the potential of process monitoring.
 In this paper, we present a prototype of a web-based application for predictive process monitoring that can be used by process workers and operational managers to predict the future development of a currently running process execution.
 The implemented solution, named \emph{Nirdizati}, is a configurable full-stack web application that supports users in selecting the preferred prediction methods from a list of implemented algorithms and enables the continuous prediction of various measures of interest at runtime. The results of the predictions, as well as the real-time summary statistics about the process executions, are presented in a dashboard that offers multiple visualization options. The target audience of this demonstration includes process mining researchers as well as practitioners interested in exploring the potential of predictive process monitoring.
+
 \keywords{Process Mining, Predictive Process Monitoring, Machine Learning}
 \end{abstract}
 
@@ -104,7 +111,19 @@ In this paper we present Nirdizati, a pioneering open-source Web-based predictiv
 between research and practice, by providing business analysts with a highly configurable instrument for the configuration,
 generation and analysis of different predictive models; and end-users with continuous runtime predictions.
 
-Nirdizati consists of two components: \textit{Nirdizati Training} and \textit{Nirdizati Runtime}. Nirdizati Training takes as input a business process event log and produces one or more prediction models, which can then be deployed in Nirdizati Runtime. Once a model is deployed, Nirdizati Runtime listens to a stream of events related to a business process, and produces a stream of predictions. These predictions are then visualized in a continuously updated Web dashboard.
+
+%\vspace{-\baselineskip}
+\begin{figure}[t]%[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{img/nirdizati-overall}
+	\caption{A high-level overview of Nirdizati.}
+	\label{fig:nirdizati-overall}
+\end{figure}
+%\vspace{-\baselineskip}
+
+
+Nirdizati consists of two components: \textit{Nirdizati Training} and \textit{Nirdizati Runtime} (Figure~\ref{fig:nirdizati-overall}). Nirdizati Training takes as input a business process event log and produces one or more prediction models, which can then be deployed in Nirdizati Runtime. Once a model is deployed, Nirdizati Runtime listens to a stream of events related to a business process, and produces a stream of predictions. These predictions are then visualized in a continuously updated Web dashboard.
+%Nirdizati consists of two components: Nirdizati Training and Nirdizati Runtime (Figure~\ref{fig:nirdizati-overall}). Nirdizati Training takes as input a business process event log and produces a prediction model. This model can then be deployed in Nirdizati Runtime. Once a model is deployed, Nirdizati Runtime listens to a stream of events related to a business process, and produces a stream of predictions. These predictions are then visualized in a continuously updated Web dashboard.
 
 \section{Nirdizati Training} \label{sec:training}
 Nirdizati Training is the component of Nirdizati that allows users to produce predictive models then used by 
@@ -144,8 +163,9 @@ The back-end application comes with a storage module for saving the uploaded log
 \begin{figure}[t]%[H]
 	\centering
 	\includegraphics[width=0.7\textwidth]{img/nirdizati-training-architecture-rev}
+	%\includegraphics[width=0.7\textwidth]{img/nirdizati-training}
 	\caption{A high-level overview of Nirdizati Training.}
-	\label{fig:RNNexample}
+	\label{fig:nirdizati-training}
 \end{figure}
 %\vspace{-\baselineskip}
 
@@ -157,6 +177,7 @@ Web server, in turn, communicates with a predictive engine which applies pre-tra
 After web server receives the outputs from each predictive model, it writes them to a database and updates corresponding clients.
 From the user's side, the results are visualized via a dashboard-based interface which is capable of sending queries requesting various visualization options.
 
+
 \begin{figure}
 	\centering
 	\includegraphics[width=0.7\textwidth]{img/dfd_0}
@@ -164,7 +185,7 @@ From the user's side, the results are visualized via a dashboard-based interface
 	\label{fig:dfd_0}
 \end{figure}
 
-Based on this data flow diagram, we devise the main parts and high-level components of the system (Figure~\ref{fig:arch}): 
+Based on this data flow diagram, we devise the main parts and high-level components of the system (Figure~\ref{fig:nirdizati-runtime}): 
 
 \begin{itemize}
 	\setlength{\itemsep}{1pt}
@@ -178,15 +199,18 @@ Based on this data flow diagram, we devise the main parts and high-level compone
 
 \begin{figure}
 	\centering
-	\includegraphics[width=1\textwidth]{img/nirdizati-runtime-architecture}
+	\includegraphics[width=1\textwidth]{img/nirdizati-runtime}
 	\caption{Proposed system design architecture}
-	\label{fig:arch}
+	\label{fig:nirdizati-runtime}
 	%	\vspace{-5\baselineskip}
 \end{figure}
 
 Process workers and operational managers – typical users of such system – can set the process performance targets and subscribe to a stream of warnings and alerts generated whenever these targets are predicted to be violated. Thus, process workers will be capable of making more informed, data-driven decisions to get a better control of the process execution. This is especially beneficial for processes where process workers have more leeway to make corrective actions, for example, in a lead management process.
 
 \section{Conclusion} \label{sec:conclusion}
+The developed solution, named \emph{Nirdizati}, is a configurable full-stack web application that supports users in selecting the preferred prediction method from the list of implemented methods and enables the continuous prediction of various performance indicators at runtime.
+The results of the predictions, as well as the real-time summary statistics about the process execution, are presented in a dashboard that offers multiple visualization options.
+
 The source code has been released as open source software under the Lesser GNU Public License (L-GPL) at \url{http://github.com/nirdizati}. The developed engine has been deployed on the server belonging to the Institute of Computer Science and can be accessed at \url{http://nirdizati.com}.
 \bibliographystyle{splncs03}
 \bibliography{paper}
