@@ -83,14 +83,15 @@
 %The developed solution, named \emph{Nirdizati}, is a configurable full-stack web application that supports users in selecting the preferred prediction method from the list of implemented methods and enables the continuous prediction of various performance indicators at runtime.
 %The results of the predictions, as well as the real-time summary statistics about the process execution, are presented in a dashboard that offers multiple visualization options.
 %The target audience of this demonstration includes process mining researchers as well as practitioners interested in exploring the potential of process monitoring.
-%In this paper, we present Nirdizati, an open-source tool for predictive monitoring of business processes.
-%The tool can be used to predict the outcome, the next events, or the remaining time of each case of a process.
-%For example, in an lead-to-order process, Nirdizati can predict which customer leads will convert to purchase orders and when.
-%In a claims handling process, Nirdizati can predict if a claim decision will be made on time or late.
+In this paper, we present Nirdizati, a web-based application for predictive process monitoring that can be used to predict the future development of a currently running process execution. The implemented solution is a configurable full-stack web application that supports users in selecting the preferred prediction methods from a list of implemented algorithms and enables the continuous prediction of various measures of interest at runtime.
+The tool can be used to predict the outcome, the next events, or the remaining time of each case of a process.
+For example, in an lead-to-order process, Nirdizati can predict which customer leads will convert to purchase orders and when.
+In a claims handling process, Nirdizati can predict if a claim decision will be made on time or late.
 %Based on these predictions, process workers and operational managers can act proactively to resolve or mitigate potential process performance violations.
 %The target audience of this demonstration includes process mining researchers as well as practitioners interested in exploring the potential of process monitoring.
-In this paper, we present a prototype of a web-based application for predictive process monitoring that can be used by process workers and operational managers to predict the future development of a currently running process execution.
-The implemented solution, named \emph{Nirdizati}, is a configurable full-stack web application that supports users in selecting the preferred prediction methods from a list of implemented algorithms and enables the continuous prediction of various measures of interest at runtime. The results of the predictions, as well as the real-time summary statistics about the process executions, are presented in a dashboard that offers multiple visualization options. The target audience of this demonstration includes process mining researchers as well as practitioners interested in exploring the potential of predictive process monitoring.
+%In this paper, we present a prototype of a web-based application for predictive process monitoring that can be used by process participants and operational managers to predict the future development of a currently running process execution.
+%The implemented solution, named \emph{Nirdizati}, is a configurable full-stack web application that supports users in selecting the preferred prediction methods from a list of implemented algorithms and enables the continuous prediction of various measures of interest at runtime. 
+The results of the predictions, as well as the real-time summary statistics about the process executions, are presented in a dashboard that offers multiple visualization options. The target audience of this demonstration includes process mining researchers as well as practitioners interested in exploring the potential of predictive process monitoring. Based on these predictions, process participants can act proactively to resolve or mitigate potential process performance violations.
 
 \keywords{Process Mining, Predictive Process Monitoring, Machine Learning}
 \end{abstract}
@@ -126,25 +127,25 @@ Nirdizati consists of two components: \textit{Nirdizati Training} and \textit{Ni
 %Nirdizati consists of two components: Nirdizati Training and Nirdizati Runtime (Figure~\ref{fig:nirdizati-overall}). Nirdizati Training takes as input a business process event log and produces a prediction model. This model can then be deployed in Nirdizati Runtime. Once a model is deployed, Nirdizati Runtime listens to a stream of events related to a business process, and produces a stream of predictions. These predictions are then visualized in a continuously updated Web dashboard.
 
 \section{Nirdizati Training} \label{sec:training}
-Nirdizati Training is the component of Nirdizati that allows users to produce predictive models then used by 
-Nirdizati Runtime for making predictions on streams of events. It provides several algorithms for generating 
-predictive models for different types of predictions and tailored to each specific dataset. 
-For example, it is able to build predictive models for predicting remaining time, the next activity to be 
+Nirdizati Training is the component of Nirdizati that allows users to produce predictive models then used by
+Nirdizati Runtime for making predictions on streams of events. It provides several algorithms for generating
+predictive models for different types of predictions and tailored to each specific dataset.
+For example, it is able to build predictive models for predicting remaining time, the next activity to be
 performed, whether a certain outcome will be achieved and even the overall workload per day.
 %
-To this aim, the training component of Nirdizati relies on two phases: a training and a validation phase. 
-In the former, one or more predictive models are built; in the latter, their suitability to the specific 
-dataset is evaluated, so as to support the user in selecting the predictive model that ensures the best results.   
+To this aim, the training component of Nirdizati relies on two phases: a training and a validation phase.
+In the former, one or more predictive models are built; in the latter, their suitability to the specific
+dataset is evaluated, so as to support the user in selecting the predictive model that ensures the best results.
 
 Nirdizati Training is composed of a front-end application, which allows users to configure the predictive models
 and to evaluate the prediction results, and a back-end application responsible of the actual training and validation.
 The back-end application is in turn composed of the four submodules shown in Figure~\ref{fig:RNNexample}.
-A Log Manager is in charge of managing the logs. Uploading and retrieving the logs are the basic operations 
+A Log Manager is in charge of managing the logs. Uploading and retrieving the logs are the basic operations
 of this module. The Encoder is responsible of parsing the logs, labeling them according to the desired type of prediction,
- and preparing the data for the training phase. 
-In the Training submodule, the encoded data are split into training and validation set used for evaluation purposes, 
+ and preparing the data for the training phase.
+In the Training submodule, the encoded data are split into training and validation set used for evaluation purposes,
 and the predictive model(s) is(are) built from the training data. Finally, the Evaluation submodule
-tests the validation data against the model(s) created to get accuracy measures with respect to the groundtruth, 
+tests the validation data against the model(s) created to get accuracy measures with respect to the groundtruth,
 available from the complete traces in the validation data.
 The back-end application comes with a storage module for saving the uploaded logs and the built predictive models.
 
@@ -172,7 +173,7 @@ The back-end application comes with a storage module for saving the uploaded log
 \section{Nirdizati Runtime} \label{sec:runtime}
 Figure~\ref{fig:dfd_0} illustrates the flow of data through the proposed system. A workflow management system (WFMS) continuously registers tasks performed in the organization.
 This serves as an input to our system, in the form of a stream of events.
-Next, the produced stream is consumed by a web server which is responsible for storing data and further information processing. 
+Next, the produced stream is consumed by a web server which is responsible for storing data and further information processing.
 Web server, in turn, communicates with a predictive engine which applies pre-trained models for a business process and returns all the results of calculations.
 After web server receives the outputs from each predictive model, it writes them to a database and updates corresponding clients.
 From the user's side, the results are visualized via a dashboard-based interface which is capable of sending queries requesting various visualization options.
@@ -185,7 +186,7 @@ From the user's side, the results are visualized via a dashboard-based interface
 	\label{fig:dfd_0}
 \end{figure}
 
-Based on this data flow diagram, we devise the main parts and high-level components of the system (Figure~\ref{fig:nirdizati-runtime}): 
+Based on this data flow diagram, we devise the main parts and high-level components of the system (Figure~\ref{fig:nirdizati-runtime}):
 
 \begin{itemize}
 	\setlength{\itemsep}{1pt}
