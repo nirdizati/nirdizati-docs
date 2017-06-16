@@ -79,26 +79,29 @@
 
 
 \begin{abstract}
-In this paper, we present a prototype of a predictive process monitoring engine for process workers and operational managers.
-The developed solution, named \emph{Nirdizati}, is a configurable full-stack web application that supports users in selecting the preferred prediction method from the list of implemented methods and enables the continuous prediction of various performance indicators at runtime.
-The results of the predictions, as well as the real-time summary statistics about the process execution, are presented in a dashboard that offers multiple visualization options.
-The target audience of this demonstration includes process mining researchers as well as practitioners interested in exploring the potential of process monitoring.
+%In this paper, we present a prototype of a predictive process monitoring engine for process workers and operational managers.
+%The developed solution, named \emph{Nirdizati}, is a configurable full-stack web application that supports users in selecting the preferred prediction method from the list of implemented methods and enables the continuous prediction of various performance indicators at runtime.
+%The results of the predictions, as well as the real-time summary statistics about the process execution, are presented in a dashboard that offers multiple visualization options.
+%The target audience of this demonstration includes process mining researchers as well as practitioners interested in exploring the potential of process monitoring.
+In this paper, we present a prototype of a web-based application for predictive process monitoring that can be used by process workers and operational managers to predict the future development of a currently running process execution.
+The implemented solution, named \emph{Nirdizati}, is a configurable full-stack web application that supports users in selecting the preferred prediction methods from a list of implemented algorithms and enables the continuous prediction of various measures of interest at runtime. The results of the predictions, as well as the real-time summary statistics about the process executions, are presented in a dashboard that offers multiple visualization options. The target audience of this demonstration includes process mining researchers as well as practitioners interested in exploring the potential of predictive process monitoring.
 \keywords{Process Mining, Predictive Process Monitoring, Machine Learning}
 \end{abstract}
 
 
 \section{Introduction} \label{sec:intro}
-\emph{Predictive Monitoring}~\cite{PredictiveMonitoring} is an emerging paradigm based on the continuous generation of predictions and recommendations on what activities to perform and what input data values to provide, so that the likelihood of violation of business constraints is minimized. % and violations can be avoided.
-In this paradigm, a user specifies a type of prediction or a measure of interest she is interested in. Based on an analysis of execution traces, the idea of predictive monitoring is to continuously provide the user with predictions and estimated values of the measure of interest. Such predictions generally depend both on: (i) the sequence of activities executed in a given case; and (ii) the values of data attributes after each activity execution in a case.
+\emph{Predictive Process Monitoring}~\cite{PredictiveMonitoring} is an emerging paradigm based on the continuous generation of predictions about the future values of user-specified measures of interest about a currently running process execution.
+%and recommendations on what activities to perform and what input data values to provide, so that the likelihood of violation of business constraints is minimized. % and violations can be avoided.
+In this paradigm, a user define the type of predictions she is interested in and a set of historical execution traces. Based on the analysis of these traces, the idea of predictive monitoring is to continuously provide the user with predictions and estimated values of the measure of interest. Such predictions generally depend both on: (i) the sequence of activities executed in a given case; and (ii) the values of data attributes after each activity execution in a case.
 
 As an example, consider a doctor who needs to choose the most appropriate therapy for a patient. Historical data referring to patients with similar characteristics can be used to predict what therapy will be the most effective one and to advise the doctor accordingly. Meanwhile, in the context of a business process for managing loan applications, the applicant can be advised on the combinations of the loan amount and the length of loan that are the most likely to lead to acceptance of the application, given contextual information about the application and the personal data of the applicant (e.g., age, salary, etc.).
 
 Several approaches have been proposed in the literature to deal with predictive process monitoring tasks.
-However, so far, the predictive monitoring approaches have largely remained in the academic domain and 
-have not been widely applied in real-time scenarios, in which users require a continuous predictive support. 
+However, so far, the predictive monitoring approaches have largely remained in the academic domain and
+have not been widely applied in real-time scenarios, in which users require a continuous predictive support.
 
-In this paper we present Nirdizati, a pioneering open-source Web-based predictive monitoring tool, which is able to fill this gap 
-between research and practice, by providing business analysts with a highly configurable instrument for the configuration,  
+In this paper we present Nirdizati, a pioneering open-source Web-based predictive monitoring tool, which is able to fill this gap
+between research and practice, by providing business analysts with a highly configurable instrument for the configuration,
 generation and analysis of different predictive models; and end-users with continuous runtime predictions.
 
 Nirdizati consists of two components: \textit{Nirdizati Training} and \textit{Nirdizati Runtime}. Nirdizati Training takes as input a business process event log and produces one or more prediction models, which can then be deployed in Nirdizati Runtime. Once a model is deployed, Nirdizati Runtime listens to a stream of events related to a business process, and produces a stream of predictions. These predictions are then visualized in a continuously updated Web dashboard.
