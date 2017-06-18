@@ -105,7 +105,7 @@ In this paradigm, a user defines the type of predictions they are interested in 
 
 As an example, consider a doctor who needs to choose the most appropriate therapy for a patient. Historical data referring to patients with similar characteristics can be used to predict what therapy will be the most effective one and to advise the doctor accordingly. Meanwhile, in the context of a business process for managing loan applications, the applicant can be advised on the combinations of the loan amount and the length of loan that are the most likely to lead to acceptance of the application, given contextual information about the application and the personal data of the applicant (e.g., age, salary, etc.).
 
-Several approaches have been proposed in the literature to deal with predictive process monitoring tasks.
+Several approaches have been proposed to tackle with predictive process monitoring tasks.
 However, so far, the predictive monitoring approaches have largely remained in the academic domain and
 have not been widely applied in real-time scenarios, in which users require a continuous predictive support.
 
@@ -168,46 +168,43 @@ The back-end application comes with a storage module for saving the uploaded log
 	%\includegraphics[width=0.7\textwidth]{img/nirdizati-training}
 	\caption{A high-level overview of Nirdizati Training.}
 	\label{fig:nirdizati-training}
+	\vspace{-0.5\baselineskip}
 \end{figure}
-%\vspace{-\baselineskip}
+
 
 \section{Nirdizati Runtime} \label{sec:runtime}
-Figure~\ref{fig:dfd_0} illustrates the flow of data through the proposed system. A workflow management system (WFMS) continuously registers tasks performed in the organization.
-This serves as an input to our system, in the form of a stream of events.
-Next, the produced stream is consumed by a web server which is responsible for storing data and further information processing.
-Web server, in turn, communicates with a predictive engine which applies pre-trained models for a business process and returns all the results of calculations.
+Once the predictive models have been trained, they can be transferred to the Runtime component to make predictions for ongoing cases. As an input, Nirdizati Runtime takes a stream of events produced by a workflow management system (WFMS) that registers tasks performed in the organization. (Figure~\ref{fig:dfd_0}). Next, the produced stream is consumed by a web server which is responsible for storing data and further information processing.
+Web server, in turn, communicates with a predictive engine which applies models obtained via Nirdizati Training for a business process and returns all the results of calculations.
 After web server receives the outputs from each predictive model, it writes them to a database and updates corresponding clients.
 From the user's side, the results are visualized via a dashboard-based interface which is capable of sending queries requesting various visualization options.
-
 
 \begin{figure}
 	\centering
 	\includegraphics[width=0.7\textwidth]{img/dfd_0}
-	\caption{High-level data flow diagram in a Yourdon-Coad notation}
+	\caption{High-level data flow diagram of Nirdizati Runtime}
 	\label{fig:dfd_0}
 \end{figure}
+\vspace{-\baselineskip}
 
-Based on this data flow diagram, we devise the main parts and high-level components of the system (Figure~\ref{fig:nirdizati-runtime}):
+When a user logs into the system, they initially see a table that lists both currently ongoing cases (colored in gray) as well as completed cases (colored in green). For each case, we provide a range of summary statistics including the number of completed events in a given case, case start time and the time of the latest event completion. For ongoing cases, we also estimated their completion time and a range of other process-specific indicators, such as the probability that a customer will not accept an offer from a salesperson. For completed cases, instead, we show the actual completion time and the actual indicators.
 
-\begin{itemize}
-	\setlength{\itemsep}{1pt}
-	\setlength{\parskip}{0pt}
-	\setlength{\parsep}{0pt}
-	\item streaming platform
-	\item web server with load balancer and internal components
-	\item predictive engine
-	\item client-side user interfaces
-\end{itemize}
+The upper panel shows aggregated process indicators, such as the number of currently running and so far completed cases, the number of occurred events, average number of events per case and average case duration.
+
+Nirdizati also allows monitoring multiple event streams simultaneously. The drop-down list in the top right corner allows a user to switch the stream. When a user switches to another process, all information in the dashboard is updated automatically. At the same time, each user can choose which process to monitor without interfering with others.
+
+The Outcomes tab provides a pie chart visualization for outcomes for ongoing and completed cases. For ongoing cases, the outcome is predicted, while for completed cases, we are using the actual value. Similarly, the Case duration tab shows a histogram of case durations, while on the Case length tab, a user will find the distribution of cases by the number of events.
+
 
 \begin{figure}
 	\centering
-	\includegraphics[width=1\textwidth]{img/nirdizati-runtime}
-	\caption{Proposed system design architecture}
+	\includegraphics[width=0.9\textwidth]{img/nirdizati-runtime}
+	\caption{Main view of Nirdizati Runtime}
 	\label{fig:nirdizati-runtime}
-	%	\vspace{-5\baselineskip}
+	\vspace{-0.5\baselineskip}
 \end{figure}
+%\vspace{-\baselineskip}
 
-Process workers and operational managers – typical users of such system – can set the process performance targets and subscribe to a stream of warnings and alerts generated whenever these targets are predicted to be violated. Thus, process workers will be capable of making more informed, data-driven decisions to get a better control of the process execution. This is especially beneficial for processes where process workers have more leeway to make corrective actions, for example, in a lead management process.
+Process workers and operational managers -- typical users of such system -- can set the process performance targets and subscribe to a stream of warnings and alerts generated whenever these targets are predicted to be violated. Thus, process workers will be capable of making more informed, data-driven decisions to get a better control of the process execution. This is especially beneficial for processes where process workers have more leeway to make corrective actions, for example, in a lead management process.
 
 \section{Conclusion} \label{sec:conclusion}
 The developed solution, named \emph{Nirdizati}, is a configurable full-stack web application that supports users in selecting the preferred prediction method from the list of implemented methods and enables the continuous prediction of various performance indicators at runtime.
