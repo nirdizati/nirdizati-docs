@@ -139,13 +139,13 @@ In the former, one or more predictive models are built; in the latter, their sui
 dataset is evaluated, so as to support the user in selecting the predictive model that ensures the best results.
 
 Nirdizati Training is composed of a front-end application, which allows users to configure the predictive models
-and to evaluate the prediction results, and a back-end application responsible of the actual training and validation.
+and to assess the goodness-of-fit of the built models, and a back-end application responsible of the actual training and validation.
 The back-end application is in turn composed of the four submodules shown in Figure~\ref{fig:nirdizati-training}.
 A Log Manager is in charge of managing the logs. Uploading and retrieving the logs are the basic operations
 of this module. The Encoder is responsible for parsing the logs, labeling them according to the desired type of prediction,
  and preparing the data for the training phase.
 In the Training submodule, the encoded data are split into training and validation set used for evaluation purposes,
-and the predictive model(s) is(are) built from the training data. Finally, the Evaluation submodule
+and the predictive models are built from the training data. Finally, the Evaluation submodule
 tests the validation data against the model(s) created to get accuracy measures with respect to the ground truth,
 available from the complete traces in the validation data.
 The back-end application comes with a storage module for saving the uploaded logs and the built predictive models.
