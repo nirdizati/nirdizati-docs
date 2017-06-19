@@ -173,7 +173,7 @@ The back-end application comes with a storage module for saving the uploaded log
 
 
 \section{Nirdizati Runtime} \label{sec:runtime}
-Once the predictive models have been trained, they can be transferred to the Runtime component to make predictions for ongoing cases. As an input, Nirdizati Runtime takes a stream of events produced by a workflow management system (WFMS) that registers tasks performed in the organization. (Figure~\ref{fig:dfd_0}). Next, the produced stream is consumed by a web server which is responsible for storing data and further information processing.
+Once the predictive models have been trained, they are used by the Runtime component to make predictions for ongoing cases. As an input, Nirdizati Runtime takes a stream of events produced by information system that register tasks performed in the organization (Figure~\ref{fig:dfd_0}). Next, the produced stream is consumed by a web server which is responsible for storing data and further information processing.
 Web server, in turn, communicates with a predictive engine which applies models obtained via Nirdizati Training for a business process and returns all the results of calculations.
 After web server receives the outputs from each predictive model, it writes them to a database and updates corresponding clients.
 From the user's side, the results are visualized via a dashboard-based interface which is capable of sending queries requesting various visualization options.
