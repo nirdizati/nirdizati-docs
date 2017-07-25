@@ -99,20 +99,20 @@ The results of the predictions, as well as the real-time summary statistics abou
 
 
 \section{Introduction} \label{sec:intro}
-\emph{Predictive Process Monitoring}~\cite{PredictiveMonitoring} is an emerging paradigm based on the continuous generation of predictions about the future values of user-specified measures of interest about a currently running process execution.
+\emph{Predictive Process Monitoring}~\cite{PredictiveMonitoring} is an emerging paradigm based on the continuous generation of predictions about the future values of user-specified performance indicators of a currently running process execution.
 %and recommendations on what activities to perform and what input data values to provide, so that the likelihood of violation of business constraints is minimized. % and violations can be avoided.
-In this paradigm, a user defines the type of predictions she is interested in and a set of historical execution traces. Based on the analysis of these traces, the idea of predictive monitoring is to continuously provide the user with predictions and estimated values of the measure of interest. Such predictions generally depend both on: (i) the sequence of activities executed in a given case; and (ii) the values of data attributes after each activity execution in a case.
+In this paradigm, a user defines the type of predictions she is interested in and provides a set of historical execution traces. Based on the analysis of these traces, the idea of predictive monitoring is to continuously provide the user with predictions and estimated values of the measure of interest. Such predictions generally depend both on: (i) the sequence of activities executed in a given case; and (ii) the values of data attributes after each activity execution in the case.
 
 %As an example, consider a doctor who needs to choose the most appropriate therapy for a patient. Historical data referring to patients with similar characteristics can be used to predict what therapy will be the most effective one and to advise the doctor accordingly. Meanwhile, in the context of a business process for managing loan applications, the applicant can be advised on the combinations of the loan amount and the length period for the loan that are the most likely to lead to acceptance of the application, given contextual information about the application and the personal data of the applicant (e.g., age, salary, etc.).
-As an example, consider a business process for managing loan applications; the applicant can be advised on the combinations of the loan amount and the length period for the loan that are the most likely to lead to acceptance of the application, given contextual information about the application and the personal data of the applicant (e.g., age, salary, etc.).
+As an example, consider a business process for managing loan applications; the applicant can be advised about the combinations of loan amount and duration that are the most likely to lead to an acceptance of the application, given some contextual information about the application and the personal data of the applicant (e.g., age, salary, etc.).
 
 Several approaches have been proposed in the literature to tackle common predictive process monitoring tasks.
 However, so far, these approaches have largely remained in the academic domain and
 have not been widely applied in real-time scenarios, in which users require a continuous predictive support.
 
 In this paper, we present Nirdizati, a pioneering open-source Web-based predictive monitoring tool, which is able to fill this gap
-between research and practice, by providing business analysts with a highly configurable instrument for the configuration,
-generation and analysis of different predictive models; and end-users with continuous runtime predictions.
+between research and practice, by providing business analysts with a highly flexible instrument for the selection,
+generation and analysis of different predictive models, and end-users with continuous runtime predictions.
 
 
 %\vspace{-\baselineskip}
@@ -125,23 +125,43 @@ generation and analysis of different predictive models; and end-users with conti
 %\vspace{-\baselineskip}
 
 
-Nirdizati consists of two components: \textit{Nirdizati Training} and \textit{Nirdizati Runtime} (\figurename~\ref{fig:nirdizati-overall}). Nirdizati Training takes as input a business process event log and produces one or more prediction models, which can then be deployed in Nirdizati Runtime. Once a model is deployed, Nirdizati Runtime listens to a stream of events related to a business process, and produces a stream of predictions. These predictions are then visualized in a continuously updated Web dashboard.
+
+Nirdizati consists of two components: \textit{Nirdizati Training} and \textit{Nirdizati Runtime} (\figurename~\ref{fig:nirdizati-overall}). Nirdizati Training takes as input a business process event log and produces one or more prediction models, which can then be deployed in Nirdizati Runtime. Once a model is deployed, Nirdizati Runtime listens to a stream of events related to the process, and produces a stream of predictions. These predictions are then visualized in a continuously updated Web dashboard.
 %Nirdizati consists of two components: Nirdizati Training and Nirdizati Runtime (Figure~\ref{fig:nirdizati-overall}). Nirdizati Training takes as input a business process event log and produces a prediction model. This model can then be deployed in Nirdizati Runtime. Once a model is deployed, Nirdizati Runtime listens to a stream of events related to a business process, and produces a stream of predictions. These predictions are then visualized in a continuously updated Web dashboard.
 
 \section{Nirdizati Training} \label{sec:training}
 Nirdizati Training is the component of Nirdizati that allows users to produce predictive models later used by
 Nirdizati Runtime for making predictions on streams of events. It provides several algorithms for generating
-predictive models for different types of predictions and tailored to each specific dataset.
+predictive models suitable for different types of predictions and tailored to each specific dataset.
 For example, it is able to build predictive models for predicting remaining time, the next activity to be
-performed, whether a certain outcome will be achieved and even the overall workload per day.
+performed, whether a certain outcome will be achieved or not and even the overall workload per day.
 %
 To this aim, the training component of Nirdizati relies on two phases: a training and a validation phase.
 In the former, one or more predictive models are built; in the latter, their suitability to the specific
 dataset is evaluated, so as to support the user in selecting the predictive model that ensures the best results.
 
-Nirdizati Training is composed of a front-end application, which allows users to configure the predictive models
-and to assess the goodness-of-fit of the built models, and a back-end application responsible of the actual training and validation.
-The back-end application is in turn composed of the four submodules shown in \figurename~\ref{fig:nirdizati-training}.
+
+\begin{figure}[t!]%[H]
+	\centering
+	 \includegraphics[width=0.9\textwidth]{img/nirdizati-frontend}
+	%\includegraphics[width=0.7\textwidth]{img/nirdizati-training}
+	\caption{The front-end of Nirdizati Training.}
+	\label{fig:nirdizati-frontend}
+	\vspace{-0.5\baselineskip}
+\end{figure}
+\begin{figure}[b!]%[H]
+	\centering
+	 \includegraphics[width=0.8\textwidth]{img/nirdizati-training-architecture-rev}
+	%\includegraphics[width=0.7\textwidth]{img/nirdizati-training}
+	\caption{A high-level overview of Nirdizati Training.}
+	\label{fig:nirdizati-training}
+	\vspace{-0.5\baselineskip}
+\end{figure}
+
+
+Nirdizati Training is composed of a front-end application (\figurename~\ref{fig:nirdizati-frontend}), which allows users to configure the predictive models
+and to assess the goodness-of-fit of the built models, and a back-end application responsible for the actual training and validation.
+The back-end application is in turn composed of four submodules shown in \figurename~\ref{fig:nirdizati-training}.
 A Log Manager is in charge of managing the logs. Uploading and retrieving the logs are the basic operations
 of this module. The Encoder is responsible for parsing the logs, labeling them according to the desired type of prediction,
  and preparing the data for the training phase.
@@ -163,14 +183,6 @@ The back-end application comes with a storage module for saving the uploaded log
 %tasked to calculate the error of the prediction model created.
 
 %\vspace{-\baselineskip}
-\begin{figure}[t]%[H]
-	\centering
-	 \includegraphics[width=0.7\textwidth]{img/nirdizati-training-architecture-rev}
-	%\includegraphics[width=0.7\textwidth]{img/nirdizati-training}
-	\caption{A high-level overview of Nirdizati Training.}
-	\label{fig:nirdizati-training}
-	\vspace{-0.5\baselineskip}
-\end{figure}
 
 
 \section{Nirdizati Runtime} \label{sec:runtime}
@@ -189,11 +201,11 @@ From the user's side, the results are visualized via a dashboard-based interface
 
 When a user logs into the system, she initially sees a table listing both currently ongoing cases (colored in gray) as well as completed cases (colored in green), as shown in \figurename~\ref{fig:nirdizati-runtime}. For each case, we provide a range of summary statistics including the number of completed events in a given case, case start time and the time of the latest event completion. For ongoing cases, we also estimated their completion time and a range of other process-specific indicators, such as the probability that a customer will not accept an offer from a salesperson. For completed cases, instead, we show the actual completion time and the actual indicators.
 
-The upper panel shows aggregated process indicators, such as the number of currently running and so far completed cases, the number of occurred events, average number of events per case and average case duration.
+%The upper panel shows aggregated process indicators, such as the number of currently running and so far completed cases, the number of occurred events, average number of events per case and average case duration.
 
-Nirdizati also allows monitoring multiple event streams simultaneously. The drop-down list in the top right corner allows a user to switch the stream. When a user switches to another process, all information in the dashboard is updated automatically. At the same time, each user can choose which process to monitor without interfering with others.
+%Nirdizati also allows monitoring multiple event streams simultaneously. The drop-down list in the top right corner allows a user to switch the stream. When a user switches to another process, all information in the dashboard is updated automatically. At the same time, each user can choose which process to monitor without interfering with others.
 
-The Outcomes tab provides a pie chart visualization for outcomes for ongoing and completed cases. For ongoing cases, the outcome is predicted, while for completed cases, we are using the actual value. Similarly, the Case duration tab shows a histogram of case durations, while on the Case length tab, a user will find the distribution of cases by the number of events.
+%The Outcomes tab provides a pie chart visualization for outcomes for ongoing and completed cases. For ongoing cases, the outcome is predicted, while for completed cases, we are using the actual value. Similarly, the Case duration tab shows a histogram of case durations, while on the Case length tab, a user will find the distribution of cases by the number of events.
 
 
 \begin{figure}
