@@ -197,9 +197,9 @@ From the user's side, the results are visualized in a dashboard-based interface,
 	\caption{High-level data flow diagram of Nirdizati Runtime.}
 	\label{fig:dfd_0}
 \end{figure}
-\vspace{-\baselineskip}
+%\vspace{-\baselineskip}
 
-When a user logs into the system, she initially sees a table listing both currently ongoing cases (colored in gray) as well as completed cases (colored in green), as shown in \figurename~\ref{fig:nirdizati-runtime}. For each case, Nirdizati Runtime provides a range of summary statistics including the number of events in a given case, starting time of a case and the time when the latest event has occurred. For the ongoing cases, Nirdizati Runtime also estimates their completion time and a range of other process-specific indicators, such as the probability that a customer will not accept an offer from a salesperson. For completed cases, instead, it shows the actual completion time and the actual values of the indicators.
+When a user logs into the system, she initially sees a table listing both currently ongoing cases (colored in gray) as well as completed cases (colored in green), as shown in \figurename~\ref{fig:nirdizati-runtime}. For each case, Nirdizati Runtime provides a range of summary statistics including the number of events in the case, its starting time and the time when the latest event in the case has occurred. For the ongoing cases, Nirdizati Runtime also estimates their completion time and a range of other process-specific indicators, such as the probability that a customer will not accept an offer from a salesperson. For completed cases, instead, it shows the actual completion time and the actual values of the indicators.
 
 %The upper panel shows aggregated process indicators, such as the number of currently running and so far completed cases, the number of occurred events, average number of events per case and average case duration.
 
@@ -220,7 +220,7 @@ When a user logs into the system, she initially sees a table listing both curren
 Process workers and operational managers -- typical users of Nirdizati -- can set the process performance targets and subscribe to a stream of warnings and alerts generated whenever these targets are predicted to be violated. Thus, they will be capable of making informed, data-driven decisions to get a better control of the process executions. This is especially beneficial for processes where process participants have more leeway to make corrective actions (for example, in a lead management process).
 
 \section{Conclusion} \label{sec:conclusion}
-Nirdizati is a configurable full-stack web application that supports users in selecting the preferred prediction method from a list of implemented methods and enables the continuous prediction of various performance indicators at runtime.
+Nirdizati is a configurable full-stack web application that supports users in building and selecting a set of predictive models and, based on these models, it enables the continuous prediction of various performance indicators at runtime.
 The results of the predictions, as well as the real-time summary statistics about the process executions, are presented in a dashboard that offers multiple visualization options.
 
 A video demo of Nirdizati can be found at \url{http://youtu.be/0nr14lX04-I}. A public release of Nirdizati Training and Nirdizati Runtime are available at \url{http://training.nirdizati.com} and \url{http://dashboard.nirdizati.com}, respectively. The source code is available under the Lesser GNU Public License (LGPL) at \url{http://github.com/nirdizati}.
