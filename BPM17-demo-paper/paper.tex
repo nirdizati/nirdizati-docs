@@ -23,7 +23,7 @@
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{booktabs}
-\usepackage{times}
+%\usepackage{times}
 \usepackage{perpage}
 \usepackage{hyperref}
 \MakePerPage{footnote}
@@ -187,11 +187,11 @@ The back-end application comes with a storage module for saving the uploaded log
 
 \section{Nirdizati Runtime} \label{sec:runtime}
 Once the predictive models have been created, they are used by the Runtime component to make predictions on ongoing cases.
-As input, Nirdizati Runtime takes a stream of events produced by an enterprise information system that register the tasks performed in an organization (\figurename~\ref{fig:dfd_0}).
-For scalable and fault-tolerant processing, we utilize an open-source stream processing platform Apache Kafka.
+As input, Nirdizati Runtime takes a stream of events produced by information systems that register the tasks performed in organizations (\figurename~\ref{fig:dfd_0}).
+For scalable and fault-tolerant processing, we use the open-source stream processing platform Apache Kafka.
 Events belonging to the same process case are collated to make predictions for that case.
-In particular, the web server communicates with a predictive engine that queries the predictive models obtained by Nirdizati Training.
-The results from all predictors are joined and along with the descriptive case statistics are visualized in a dashboard-based interface, which supports several visualization options.
+A web server communicates with a predictive engine that queries the predictive models obtained by Nirdizati Training.
+The results from all predictors are joined and visualized in a dashboard-based interface, which supports several visualization options.
 
 \begin{figure}[t]
 	\centering
@@ -201,7 +201,7 @@ The results from all predictors are joined and along with the descriptive case s
 \end{figure}
 %\vspace{-\baselineskip}
 
-The dashboard provides a list of both currently ongoing cases (colored in gray) as well as completed cases (colored in green), as shown in \figurename~\ref{fig:nirdizati-runtime}. For each case, it is also possible to visualize a range of summary statistics including the number of events in the case, its starting time and the time when the latest event in the case has occurred. For the ongoing cases, Nirdizati Runtime provides the predicted values of the performance indicators the user wants to predict. For completed cases, instead, it shows the actual values of the indicators. Apart from the table view, the dashboard offers other visualization options, such as pie charts for case outcomes and bar charts for case durations.
+The dashboard provides a list of both currently ongoing cases (colored in gray) as well as completed cases (colored in green), as shown in \figurename~\ref{fig:nirdizati-runtime}. For each case, it is also possible to visualize a range of summary statistics including the number of events in the case, its starting time and the time when the latest event in the case has occurred. For the ongoing cases, Nirdizati Runtime provides the predicted values of the performance indicators the user wants to predict. For completed cases, instead, it shows the actual values of the indicators. In addition to the table view, the dashboard offers other visualization options, such as pie charts for case outcomes and bar charts for case durations.
 
 %The upper panel shows aggregated process indicators, such as the number of currently running and so far completed cases, the number of occurred events, average number of events per case and average case duration.
 
