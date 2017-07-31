@@ -126,7 +126,7 @@ generation and analysis of different predictive models, and end-users with conti
 
 
 
-Nirdizati consists of two components: \textit{Nirdizati Training} and \textit{Nirdizati Runtime} (\figurename~\ref{fig:nirdizati-overall}). Nirdizati Training takes as input a business process event log and produces one or more predictive models, which can then be deployed in Nirdizati Runtime. Once a model is deployed, Nirdizati Runtime listens to a stream of events coming from information systems supporting the process, and produces a stream of predictions. These predictions are then visualized in a continuously updated web dashboard.
+Nirdizati consists of two components: \textit{Nirdizati Training} and \textit{Nirdizati Runtime} (\figurename~\ref{fig:nirdizati-overall}). Nirdizati Training takes as input a business process event log and produces one or more predictive models, which can then be deployed in Nirdizati Runtime. Once a model is deployed, Nirdizati Runtime listens to a stream of events coming from an information system supporting the process, and produces a stream of predictions. These predictions are then visualized in a continuously updated web dashboard.
 %Nirdizati consists of two components: Nirdizati Training and Nirdizati Runtime (Figure~\ref{fig:nirdizati-overall}). Nirdizati Training takes as input a business process event log and produces a predictive model. This model can then be deployed in Nirdizati Runtime. Once a model is deployed, Nirdizati Runtime listens to a stream of events related to a business process, and produces a stream of predictions. These predictions are then visualized in a continuously updated web dashboard.
 
 \section{Nirdizati Training} \label{sec:training}
@@ -143,7 +143,7 @@ dataset is evaluated, so as to support the user in selecting the predictive mode
 
 \begin{figure}[t!]%[H]
 	\centering
-	 \includegraphics[width=0.8\textwidth]{img/nirdizati-frontend}
+	 \includegraphics[width=0.9\textwidth]{img/nirdizati-frontend}
 	%\includegraphics[width=0.7\textwidth]{img/nirdizati-training}
 	\caption{Front-end of Nirdizati Training.}
 	\label{fig:nirdizati-frontend}
@@ -151,7 +151,7 @@ dataset is evaluated, so as to support the user in selecting the predictive mode
 \end{figure}
 \begin{figure}[b!]%[H]
 	\centering
-	 \includegraphics[width=0.8\textwidth]{img/nirdizati-training-architecture-rev}
+	 \includegraphics[width=0.9\textwidth]{img/nirdizati-training-architecture-rev}
 	%\includegraphics[width=0.7\textwidth]{img/nirdizati-training}
 	\caption{High-level overview of Nirdizati Training.}
 	\label{fig:nirdizati-training}
@@ -187,14 +187,14 @@ The back-end application comes with a storage module for saving the uploaded log
 
 \section{Nirdizati Runtime} \label{sec:runtime}
 Once the predictive models have been created, they are used by the Runtime component to make predictions on ongoing cases.
-Nirdizati Runtime takes a stream of events produced by an organization’s information systems, transforms it into a stream of predictions, and visualizes those predictions in a web-based dashboard.
-The transformation is implemented using the dataflow pipeline in \figurename~\ref{fig:dfd_0}, in which the ``predictor'' components are the predictive models from Nirdizati Training.
-The pipeline is built atop the the open-source Apache Kafka stream processing platform; the ``topic'' components are network-accessible queues of JSON messages with publisher/subscriber support. This allows the computationally intense work of the predictors to be distributed across a cluster of networked computers, providing scalability and fault-tolerance.
-The ``collator'' component accumulates the sequence of events-to-date for each case, such that (for intra-case predictive monitoring) the prediction is a stateless function of only of the (static) trained predictive model and this case history.  This statelessness is what allows the predictors to be freely duplicated and distributed.  The ``joiner'' component composes the original event with the various predictions, ready for display on the dashboard.
+Nirdizati Runtime takes a stream of events produced by an information system, transforms it into a stream of predictions, and visualizes those predictions in a web-based dashboard.
+The transformation is implemented using the dataflow pipeline in \figurename~\ref{fig:dfd_0}. 
+The pipeline is built on top of the open-source Apache Kafka stream processing platform. The ``predictor'' components of the pipeline are the predictive models from Nirdizati Training. The ``topic'' components are network-accessible queues of JSON messages with publisher/subscriber support. This allows the computationally intense work of the predictors to be distributed across a cluster of networked computers, providing scalability and fault-tolerance.
+The ``collator'' component accumulates the sequence of events-to-date for each case, such that the prediction is a stateless function of the trained predictive model and of the case history.  This statelessness is what allows the predictors to be freely duplicated and distributed.  The ``joiner'' component composes the original events with the various predictions, ready for display on the dashboard.
 
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=\textwidth]{img/nirdizati-dataflow}
+	\includegraphics[width=0.9\textwidth]{img/nirdizati-dataflow}
 	\caption{High-level data flow diagram of Nirdizati Runtime.}
 	\label{fig:dfd_0}
 \end{figure}
@@ -211,7 +211,7 @@ The dashboard provides a list of both currently ongoing cases (colored in gray) 
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.8\textwidth]{img/nirdizati-runtime}
+	\includegraphics[width=0.9\textwidth]{img/nirdizati-runtime}
 	\caption{Main view of Nirdizati Runtime.}
 	\label{fig:nirdizati-runtime}
 	\vspace{-0.5\baselineskip}
@@ -222,7 +222,7 @@ Process workers and operational managers -- typical users of Nirdizati -- can se
 
 \section{Conclusion} \label{sec:conclusion}
 Nirdizati is a configurable full-stack web application that supports users in selecting and tuning prediction methods from a list of implemented algorithms and that enables the continuous prediction of various performance indicators at runtime.
-The predictions, as well as real-time summary statistics about the process executions, are presented in a dashboard that offers multiple visualization options.
+The predictions are presented in a dashboard that offers multiple visualization options.
 
 A video demo of Nirdizati can be found at \url{http://youtu.be/0nr14lX04-I}. A public release of Nirdizati Training and Nirdizati Runtime is available at \url{http://training.nirdizati.com} and \url{http://dashboard.nirdizati.com}, respectively. The source code is available under the Lesser GNU Public License (LGPL) at \url{http://github.com/nirdizati}.
 \bibliographystyle{splncs03}
