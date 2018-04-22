@@ -189,18 +189,15 @@ To fill this gap, last year we started the \emph{Nirdizati} open-source project,
 \end{figure}
 %\vspace{-\baselineskip}
 
-The two core components of Nirdizati, namely \textit{Training} and \textit{Runtime}, have been integrated as two bundles (i.e.\ sets) of plugins into Apromore (\figurename~\ref{fig:nirdizati-overall}). The Training plugin bundle takes as input a business process event log stored in the Apromore repository, and produces one or more predictive models, which can then be deployed to the runtime predictive monitoring environment. Once a model is deployed, the Runtime plugin bundle listens to a stream of events coming from an information system supporting the process, or produced by replaying an event log stored in the repository, and creates a stream of predictions. These predictions can then be visualized in a Web dashboard or exported into a CSV (comma-separated value) file for periodic reporting and to be used within third-party business intelligence tools.
+The two core components of Nirdizati, namely \textit{Training} and \textit{Runtime}, have been integrated as two bundles (i.e.\ sets) of plugins into Apromore (\figurename~\ref{fig:nirdizati-overall}). The Training plugin bundle takes as input a business process event log stored in the Apromore repository, and produces one or more predictive models, which can then be deployed to the runtime predictive monitoring environment. Once a model is deployed, the Runtime plugin bundle listens to a stream of events coming from an information system supporting the process, or produced by replaying an event log stored in the repository, and creates a stream of predictions. These predictions can then be visualized in a Web dashboard or exported into a text file to be used within third-party business intelligence tools.
 %Nirdizati consists of two components: Nirdizati Training and Nirdizati Runtime (Figure~\ref{fig:nirdizati-overall}). Nirdizati Training takes as input a business process event log and produces a predictive model. This model can then be deployed in Nirdizati Runtime. Once a model is deployed, Nirdizati Runtime listens to a stream of events related to a business process, and produces a stream of predictions. These predictions are then visualized in a continuously updated web dashboard.
 
 \section{Apromore Platform}
 \input{./apromore.tex}
 
 \section{Running Example}
-As a running example, throughout this paper we will consider a purchase-to-pay process of an IT vendor. The process starts with lodging a purchase order and ends when requested goods have been supplied. 
+As a running example, throughout this paper we will consider a purchase-to-pay process of an IT vendor. The process starts with lodging a purchase order and ends when requested goods have been supplied. The stakeholders are interested in predicting four variables:
 
-For use with the Training plugin bundle, we extracted an event log of completed purchased orders, while ongoing orders were fed into the Runtime plugin bundle to make predictions for them. The corresponding event log contains a number of case attributes, such as the total cost of the order, supplier identifier, supplier location, delivery type and the target supply date. Moreover, each event contains identifier of an employee who performed it.
-
-In this process, stakeholders are interested in predicting four variables:
 \begin{itemize}
 	\item \emph{Late supply}. It is a boolean variable indicating whether or not the case will be closed before the supply date of that case.
 	\item \emph{Delay Rank} indicating the degree of potential delay, namely ``Just in case'', ``Mild'', ``Moderate'', ``Severe''.
@@ -208,7 +205,7 @@ In this process, stakeholders are interested in predicting four variables:
 	\item \emph{Remaining time} until case completion.
 \end{itemize}
 
-In order to make more accurate predictions, we performed some basic feature engineering before feeding the log into Apromore. For example, to take into account resource contention, we added the number of currently open cases as an event attribute. Furthermore, instead of the absolute target supply date, we used the number of days relative to the case start date. Intuitively, if this number is lower, there exists a higher probability of missing the deadline (Late Supply).
+For use with the Training plugin bundle, we extracted an event log of completed purchased orders, while ongoing orders were fed into the Runtime plugin bundle to make predictions for them. The log contains a number of case attributes and event attributes ready to be used to train the models. Furthermore, in order to make more accurate predictions, we performed some basic feature engineering before feeding the log into Apromore. For example, to take into account resource contention, we added the number of currently open cases as an event attribute.
 
 \section{Training Plugin Bundle} \label{sec:training}
 %\begin{wrapfigure}
@@ -245,7 +242,8 @@ To this aim, the Training bundle involves two phases: a training and a validatio
 The Training bundle is composed of a front-end application (\figurename~\ref{fig:nirdizati-frontend}), which allows users to select the prediction methods
 and to assess the goodness-of-fit of the built models, and a back-end application  for the actual training and validation. From the data flow perspective, the back-end application performs several tasks shown in \figurename~\ref{fig:nirdizati-training}.
 
-Firstly, when a user uploads their log, the tool extracts and categorizes data attributes of the log into static case attributes and dynamic event attributes. To this end, for each attribute in the log, we check whether it changes throughout the case lifetime. On the other hand, each attribute needs to be designated as either numeric or categorical. 
+Firstly, when a user uploads their log, the tool extracts and categorizes data attributes of the log into static case attributes and dynamic event attributes. On the other hand, each attribute needs to be designated as either numeric or categorical. These procedures are performed automatically upon the log uploading. Nevertheless, the user is given an option to override the automatic attribute definitions. Proper attribute categorization ensures best training data quality. 
+The resulting definitions are saved in a configuration file in a JSON format (Fig.~\ref{fig:listing}).
 
 %\begin{lstlisting}[float,floatplacement=H,language=json,firstnumber=1,caption={Example training configuration file},captionpos=b,label={lst:training-config}]
 %{
@@ -261,8 +259,7 @@ Firstly, when a user uploads their log, the tool extracts and categorizes data a
 %}
 %\end{lstlisting}
 
-In order to do that, we count the number of unique levels in the values of each attribute and if it less than a certain threshold, we decide the attribute to be categorical, otherwise it is numeric. These procedures are performed automatically upon the log uploading. Nevertheless, the user is given an option to override the automatic attribute definitions. Proper attribute categorization ensures best training data quality. 
-The resulting definitions are saved in a configuration file in a JSON format (Fig.~\ref{fig:listing}). Secondly, the log is internally split into training and validation set in a 80-20 proportion. The former is used to train the model, while the latter is used to evaluate the predictive power of the model. Next, all traces of a business process need to be represented as fixed-size feature vectors in order to train a predictive model. To this end, several encoding techniques were proposed in \cite{Leontjeva2015} and further refined in \cite{Teinemaa2017}, out of which we support four, namely last state encoding, frequency (aggregation) encoding, combined encoding and lossless index-based encoding. 
+Secondly, the log is internally split into training and validation set in a 80-20 proportion. The former is used to train the model, while the latter is used to evaluate the predictive power of the model. Next, all traces of a business process need to be represented as fixed-size feature vectors in order to train a predictive model. To this end, several encoding techniques were proposed in \cite{Leontjeva2015} and further refined in \cite{Teinemaa2017}, out of which we support four, namely last state encoding, frequency (aggregation) encoding, combined encoding and lossless index-based encoding. 
 \begin{figure}[htp!]%[H]
 	\centering
 	 \includegraphics[width=.7\textwidth]{img/Listing}
@@ -274,20 +271,21 @@ The resulting definitions are saved in a configuration file in a JSON format (Fi
 
 While some of existing predictive process monitoring approaches train a single classifier on the whole event log, others employ a multi-classifier approach by dividing the prefix traces in the historical log into several buckets and fitting a separate classifier for each such bucket. At run-time, the most suitable bucket for the ongoing case is determined and the respective classifier is applied to make a prediction. Various bucketing types have been proposed and described in detail in \cite{Teinemaa2017}. The Training bundle supports four types of bucketing: zero bucketing (i.e. fitting a single classifier), state-based bucketing, clustering-based bucketing and prefix length-based bucketing.
 
-For each bucket of feature vectors, we train a predictive model using one of four supported machine learning techniques: decision tree, random forest, gradient boosting and extreme gradient boosting (XGBoost). For each technique, a user may manually enter the values of the most important hyperparameters. For example, when fitting a gradient boosting model, a user may choose the number of weak learners (trees), the number of features to be used for each split and the learning rate.
+For each bucket of feature vectors, we train a predictive model using one of four supported machine learning techniques: decision tree, random forest, gradient boosting and extreme gradient boosting (XGBoost). For each technique, a user may manually enter the values of the most critical hyperparameters, e.g the number of weak learners (trees) in a random forest model.
 
-In order to accommodate users with varying degrees of expertise in machine learning and predictive process monitoring, the plugin bundle offers two training modes -- basic and advanced. By default, the basic mode is activated wherein a user only needs to choose the log and prediction target. If the prediction target is based on the logical rule -- whether the case duration will exceed the specified threshold, a user is also invited to key in the threshold value. For all the other settings -- bucketing method, encoding method and prediction method and its hyperparameters -- the default values which usually achieve the best prediction accuracy will be used. Experienced users may switch the advanced mode toggle and manually choose bucketing, encoding and prediction method settings or any sensible combination thereof. The latter is especially useful when a user wants to train and compare multiple models, e.g. using various sequence encoding methods.
+In order to accommodate users with varying degrees of expertise in machine learning and predictive process monitoring, the plugin bundle offers two training modes -- basic and advanced. By default, the basic mode is activated wherein a user only needs to choose the log and prediction target. If the prediction target is based on the logical rule -- whether the case duration will exceed the specified threshold, a user is also invited to key in the threshold value. For all the other settings -- bucketing method, encoding method and prediction method and its hyperparameters -- the default values which usually achieve the best prediction accuracy will be used. Experienced users may switch the advanced mode toggle and manually choose bucketing, encoding and prediction method settings or any plausible combination thereof. The latter is especially useful when a user wants to train and compare multiple models, e.g. using various sequence encoding methods.
 
 The status of the trained models can be verified using the collapsible drawer in the right-hand corner. Upon the training completion, a serialized Python object in the pickle format is produced. It describes a trained predictive model and includes:
 
 \begin{itemize}
 	\item Configuration parameters of the predictors (whether it is a classifier or a regressor, what learning algorithm it uses)
 	\item Definition of each column of the event log (static or dynamic, numeric or categorical). This information allows the Runtime plugin bundle to construct a feature vector from a given partial trace.
-	\item The bucketing function, which given an input sample, allows us to determine which classifier/regressor should be used. Unless a zero bucketing is used, the pickle file has a different classifier/regressor per bucket.
-	\item For each bucket, the trained model, ready to be taken as input by the selected classification algorithm, e.g. in the case of decision trees, the whole tree representation.
+	\item For each bucket, the trained model, ready to be taken as input by the selected prediction algorithm, e.g. in the case of decision trees, the whole tree representation.
+	\item The bucketing function, which given an input sample, allows us to determine from which bucket a predictor should be taken.
+
 \end{itemize}
 
-The predictive power of the trained model(s) can be evaluated on a held-out validation set. By default, a user will see the average accuracy across all partial traces after a certain number of events have completed. This evaluation method was also used in \cite{Leontjeva2015} and \cite{Teinemaa2017}. For classification tasks (e.g. prediction of Late Supply and Delay Rank), a user can choose which metrics to plot among accuracy score, F1 score and logarithmic loss. For regression tasks (e.g. remaining time), a user can choose between mean absolute error, either raw or normalized, and root mean square error. The accuracy of a particular model can be visually compared with that of other models trained for the same log and the same prediction target (Figure~\ref{fig:training-evaluation}). Additionally, one can check a scatterplot of predicted vs. actual values (for regression tasks) or a confusion matrix (for classification tasks) and assess the relative importance of each feature for the chosen predictor.
+The predictive power of the trained model(s) can be evaluated on a held-out validation set. By default, a user will see the average accuracy across all partial traces after a certain number of events have completed. This evaluation method was also used in \cite{Leontjeva2015} and \cite{Teinemaa2017}. For classification tasks (e.g. prediction of Late Supply and Delay Rank), a user can choose which metrics to plot among accuracy score, F1 score and logarithmic loss. For regression tasks (e.g. remaining time), a user can choose between mean absolute error and root mean square error, either raw or normalized. The accuracy of a particular model can be visually compared with that of other models trained for the same log and the same prediction target (Figure~\ref{fig:training-evaluation}). Additionally, one can check a scatter plot of predicted vs. actual values (for regression tasks) or a confusion matrix (for classification tasks) and assess the relative importance of each feature for the chosen predictor.
 
 \begin{figure}[t]
 	\centering
@@ -299,14 +297,15 @@ The predictive power of the trained model(s) can be evaluated on a held-out vali
 
 \section{Runtime Plugin Bundle} \label{sec:runtime}
 Once the predictive models have been created, they can be deployed to the Runtime predictive monitoring environment of Apromore, to make predictions on ongoing cases. The Runtime plugin bundle can be used to stream an event log from the repository, or hook into an external stream. Either way, the input stream is transformed into a stream of predictions which is visualized in a Web-based dashboard. The transformation is implemented using the dataflow pipeline in \figurename~\ref{fig:dfd_0}.
-\vspace{-.5\baselineskip}
+%\vspace{-.5\baselineskip}
 \begin{figure}[htp!]
 	\centering
 	\includegraphics[width=\textwidth]{img/runtime-dataflow}
 	\caption{High-level data flow diagram of the Runtime plugin bundle.}
 	\label{fig:dfd_0}
+	%\vspace{-\baselineskip}
 \end{figure}
-\vspace{-.5\baselineskip}
+%\vspace{-.5\baselineskip}
 
 The pipeline is built on top of the open-source Apache Kafka stream processing platform.\footnote{\url{https://kafka.apache.org}} The ``predictor'' components of the pipeline are the predictive models from the Training plugin bundle. The ``topic'' components are network-accessible queues of JSON messages with publisher/subscriber support. This allows the computationally intense work of the predictors to be distributed across a cluster of networked computers, providing scalability and fault-tolerance.
 The ``collator'' component accumulates the sequence of events-to-date for each case, such that the prediction is a stateless function of the trained predictive model and of the case history.  This statelessness is what allows the predictors to be freely duplicated and distributed.  The ``joiner'' component composes the original events with the various predictions, ready for display on the dashboard.
@@ -319,13 +318,13 @@ The dashboard provides a list of both currently ongoing cases (colored in gray) 
 
 %The Outcomes tab provides a pie chart visualization for outcomes for ongoing and completed cases. For ongoing cases, the outcome is predicted, while for completed cases, we are using the actual value. Similarly, the Case duration tab shows a histogram of case durations, while on the Case length tab, a user will find the distribution of cases by the number of events.
 
-\vspace{-\baselineskip}
+%\vspace{-\baselineskip}
 \begin{figure}
 	\centering
 	\includegraphics[width=\textwidth]{img/nirdizati-runtime}
 	\caption{Main view of the dashboard in the Runtime plugin bundle.}
 	\label{fig:nirdizati-runtime}
-	\vspace{-\baselineskip}
+	%\vspace{-\baselineskip}
 \end{figure}
 %\vspace{-\baselineskip}
 
@@ -334,7 +333,7 @@ Process workers and operational managers can set some process performance target
 \section{Conclusion} \label{sec:conclusion}
 Through the integration with Nirdizati, Apromore offers a configurable full-stack Web tool that supports users in selecting and tuning various prediction models, and that enables the continuous prediction of different process performance indicators at runtime. Predictions can be presented visually in a dashboard or exported for periodic reporting.
 
-Video demos of the model training and of the runtime functionality can be found at \url{http://youtu.be/CYwLTKAbF1Q} and at \url{http://youtu.be/Q4WVebqJzUI} respectively. The source code is available under the LGPL version 3.0 license at \url{https://github.com/apromore/ApromoreCode}.
+Video demos of the model training and of the runtime functionality can be found at \url{http://youtu.be/xOGckUxmrVQ} and at \url{http://youtu.be/Q4WVebqJzUI} respectively. The source code is available under the LGPL version 3.0 license at \url{https://github.com/apromore/ApromoreCode}.
 %\vspace{-\baselineskip}
 \bibliographystyle{splncs03}
 \bibliography{paper}
